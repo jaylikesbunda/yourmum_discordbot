@@ -1,0 +1,5 @@
+2023-11-11 17:50:07,868:WARNING:discord.client: PyNaCl is not installed, voice will NOT be supported
+2023-11-11 17:50:07,870:INFO:discord.client: logging in using static token
+2023-11-11 17:50:09,609:INFO:discord.gateway: Shard ID None has connected to Gateway (Session ID: 0f31c61181e03814ac5e5ab3091c786f).
+2023-11-11 17:50:12,091:INFO:root: Your Mum has connected to Discord!
+2023-11-11 17:50:13,626:INFO:root: Received message: "sdlkfm" from fuckyoudeki on server: 679271078614401035
