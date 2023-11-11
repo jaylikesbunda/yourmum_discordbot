@@ -1,19 +1,23 @@
 # YourMum Discord Bot
 
-A simple Discord bot that tells 'your mum' jokes.
+- A simple Discord bot that tells 'your mum' jokes.
 
 ## Features
 
-- Responds with a joke when a specific keyword is typed.
-- Sends a random 'your_mum' joke every 25 messages in a channel.
-- Sends a random poll every 50 messages in a channel.
-- Stores usage stats for individual servers and is callable with "/stats"
+- Message Counting: It tracks the number of messages sent in a Discord server.
+- Poll Creation: Once a set threshold of messages is reached, it creates a poll by selecting a random member.
+- Joke Responses: It sends a 'your_mum' joke after a specified number of messages.
+- Keyword Triggered Jokes: It responds with jokes when certain keywords or phrases are mentioned in messages.
+- Slash Commands: It has slash commands like /your_mum for users to invoke specific actions, such as getting a random joke.
+- Logging: It logs message data for analysis and debugging.
+- Stats Update: It maintains and updates server usage statistics for commands and jokes.
+- Dynamic Responses: It replies to messages dynamically, and can reference the message it's responding to
 
 ## Dependencies
 
-Python 3.9
-SQLite
-Aiosqlite
+- Python 3.9
+- SQLite
+- Aiosqlite
 
 
-created by Jay Candel
+- created by Jay Candel
