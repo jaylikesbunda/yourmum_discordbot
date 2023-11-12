@@ -18,6 +18,6 @@
 - Python 3.9
 - SQLite
 - Aiosqlite
-
+- Discord.py
 
 created by Jay Candel
