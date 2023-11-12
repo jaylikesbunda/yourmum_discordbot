@@ -1,4 +1,3 @@
-
 import discord
 from discord.ui import Button, View
 from discord.ext import commands
@@ -24,46 +23,54 @@ polls = [
 
 # Define your keywords and corresponding jokes
 KEYWORD_JOKES = {
-    'big': 'You know what else is big? Your mum!',
-    'small': 'That might be small, but your mum\'s appetite sure isn\'t!',
-    'soft': 'Not as soft as your mum\'s ass!',
-    'old': 'Couldn\'t be older than your mum though!',
-    'fat': 'Not as fat as your mum though!',
-    'heavy': 'Heavy? I guess you haven\'t lifted your mum lately!',
-    'slow': 'Not as slow as your mum on a treadmill!',
-    'fast': 'Couldn\'t be as fast as your mum makes me bust',
-    'tight': 'Tighter than your mum\'s yoga pants!',
-    'hard': 'Not as hard as me when I see your mum!',
-    'hot': 'Couldn\'t be hotter than your mum last night!',
-    'cold': 'Colder than your mum\'s stare when you disappoint her!',
-    'weak': 'Weaker than your mum\'s dieting schedule!',
-    'bright': 'Not as bright as your mum’s smile - bless her!',
-    'thin': 'Thin? Couldn\'t be your mum!',
-    'food': 'talking bout food, tell ur mum daddy wants his milky',
-    ('would', 'you'): 'Would you get your mym so she can bounce on deez nuts!',
-    ('get', 'on'): 'I\ll get on just like your mum got on this dick!',
-    ('hop', 'on'): 'Hop on deez nuts!',
-    ('this', 'sucks'): 'Yeah sucks more than your mum!',
-    ('u', 'should'): 'u should tell ur mum she lookin kinda cute today',
-    ('is', 'ass'): 'Your mum is ass.',
-    ('are', 'ass'): 'Your mums titties are ass.',
-    ('my', 'perms'): 'Stop complaining',
-    ('should', 'i'): 'yes.',
-    ('thanks', 'bot'): 'you\'re welcome',
-    
+    'big': [
+        'You know what else is big? Your mum!',
+        'Big like your mum\'s asshole after i\'m done with her!',
+    ],
+    'small':[ 'That might be small, but your mum\'s appetite sure isn\'t!', ],
+    'soft': ['Not as soft as your mum\'s ass!',],
+    'hairy': ['Hairy as your mum!',],
+    'old': ['Couldn\'t be as old as your mum!',],
+    'fat': ['Not as fat as your mum!',],
+    'loose': ['yo mama pussy loose ah hell',],
+    'dinner': ['Speaking of dinnner where is your mum ;)',],
+    'heavy': ['Heavy? I guess you haven\'t lifted your mum lately!',],
+    'slow': ['Not as slow as your mum on a treadmill!',],
+    'fast': ['Couldn\'t be as fast as your mum makes me bust',],
+    'tight': ['Tighter than your mum\'s yoga pants!',],
+    'hard': ['Not as hard as me when I see your mum!',],
+    'hot': ['Couldn\'t be hotter than your mum last night!','Not as hot as your mum!',],
+    'weak': ['Weaker than your mum\'s dieting schedule!',],
+    'bright': ['Not as bright as your mum’s smile - bless her!',],
+    'thin': ['Thin? Couldn\'t be your mum!',],
+    'deep': ['Almost as deep as I am in your mama',],
+    'food': ['talking bout food, tell ur mum daddy wants his milky ;)',],
+    ('would', 'you'): ['Would you get your mum for me so she can bounce on deez nuts!',],
+    ('get', 'on'): ['I\'ll get on just like your mum got on this dick!',],
+    ('hop', 'on'): ['Hop on deez nuts!','Get ur mum to hop on deez nuts!',],
+    ('this', 'sucks'): ['Yeah sucks more than your mum!',],
+    ('u', 'should'): ['u should tell ur mum she lookin kinda cute today',],
+    ('is', 'ass'): ['Your mum is ass.',],
+    ('are', 'ass'): ['Your mums titties are ass.',],
+    ('my', 'perms'): ['Stop complaining',],
+    ('should', 'i'): ['yes.','no.','maybe.','without a doubt',],
+    ('loading'): ['loading up your mum with goodness',],
+    ('thanks', 'bot'): ['you\'re welcome','all good',],
+    ('good', 'bot'): ['thank you','appreciate it',],
+    ('i\'m', 'getting'): ['and i\'m getting lucky with yo mama!','and i\'m getting good ass top from yo mama!',],
+    ('im', 'getting'): ['and i\'m getting lucky with yo mama!','and i\'m getting good ass top from yo mama!',],
+    ('good', 'morning'): ['Good Morning yourself! Is your mum walking alright after last night?',],
+    ('hate', 'you'): ['https://tenor.com/view/damn-kendrick-lamar-%EC%BC%84%EB%93%9C%EB%A6%AD-%EB%9D%BC%EB%A7%88-gif-9061375','damn.',],
 }
 
 # Define a separate list for slash command jokes
 SLASH_COMMAND_JOKES = [
-    'Yo mama is so big, her belt size is "equator."',
-    'Yo mama so fat, when she talks to herself, it\'s a long-distance call.',
     'Yo mama is so fat that when she hauls ass, she has to make two trips.',
     'Yo mama is so poor she goes to KFC to lick other peoples fingers.',
     'Yo mama\'s so fat, her car has stretch marks.',
     'Your mama so fat, her memory foam mattress drinks to forget.',
     'Yo mama so beautiful I wish to gaze upon her heavenly body and make love to her until the dawn of tomorrow, her bosom awaits me...',
     'Yo mama\'s so stupid, she got locked in the grocery store and starved to death.',
-    'Yo mama\'s so old, she walked out of a museum and the alarm went off.',
     'Yo mama the global throat goat',
     'Yo mama so fat when I had a threesome with her I never met the other guy.',
     'Yo mama so nasty, she went swimming and made the Dead Sea.',
@@ -73,10 +80,8 @@ SLASH_COMMAND_JOKES = [
     'I told yo mama to act her age and the bitch dropped dead.',
     'Yo mama so fat after I finished fucking her I rolled over three times and I was still on the bitch.',
     'Yo mama so nasty, she got fired from the sperm bank for drinking on the job',
-    'Yo mama so fat she got a $1567 debt on Afterpay from ordering McDonalds',
-    
+    'Yo mama so fat she got a $1567 debt on Afterpay from ordering McDonalds',    
 ]
-
 # Define the necessary intents
 intents = discord.Intents.default()
 intents.messages = True  # Assuming the bot needs access to message content
@@ -93,7 +98,6 @@ class MyBot(commands.Bot):
 
 # Initialize your bot
 bot = MyBot(command_prefix="/", intents=intents)
-
 
 db_connection = None
 
@@ -287,21 +291,26 @@ async def on_message(message):
     
     # The message handler will need to check for both single keywords and tuples with order.
     message_content = message.content.lower()  # We'll keep the original message content here
-    for keywords, joke in KEYWORD_JOKES.items():
+    for keywords, jokes_list in KEYWORD_JOKES.items():
         if isinstance(keywords, tuple):  # If the key is a tuple, we'll check for the exact sequence
             # Join the tuple into a phrase and check if it appears in the message
             keyword_phrase = ' '.join(keywords)
             if keyword_phrase in message_content:
-                await message.channel.send(joke)
+                # Select a random joke from the list of jokes for these keywords
+                joke = random.choice(jokes_list)
+                await message.reply(joke)
                 # Update keyword stats
                 await update_stats(guild_id, '_'.join(keywords))
                 break
         else:  # If the key is a string, it's a single keyword
             if keywords in message_content.split():  # Splitting to match whole words only
-                await message.channel.send(joke)
+                # Select a random joke from the list of jokes for this keyword
+                joke = random.choice(jokes_list)
+                await message.reply(joke)
                 # Update keyword stats
                 await update_stats(guild_id, keywords)
                 break
+
 
 @bot.tree.command(name='your_mum', description='Respond with a random your mum joke.')
 async def your_mum(interaction: discord.Interaction):
@@ -363,8 +372,6 @@ async def stats(interaction: discord.Interaction):
         await interaction.response.send_message("An error occurred while fetching stats.", ephemeral=True)
         
 
-
-
 # Select menu for the poll
 class PollSelect(discord.ui.Select):
     def __init__(self):
@@ -415,8 +422,7 @@ async def create_and_send_poll(channel, member):
     poll_message_text = random.choice(polls).format(member.mention)
     view = PollView()  # No arguments 
     await channel.send(poll_message_text, view=view)
-
-    
+   
 def select_random_member(guild):
     return random.choice([member for member in guild.members if not member.bot]) if guild.members else None
 
@@ -438,8 +444,6 @@ async def poll(interaction: discord.Interaction):
     # Update the command usage stats once, after the poll has been created or failed.
     await update_command_usage(interaction.guild.id, 'poll')
 
-
-
-bot.run('"application token here"')
+bot.run('INSERT APP TOKEN HERE')
 
 
