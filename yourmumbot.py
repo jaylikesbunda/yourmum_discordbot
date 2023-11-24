@@ -1,4 +1,5 @@
 import discord
+import re
 from discord.ui import Button, View
 from discord.ext import commands
 import random
@@ -6,22 +7,24 @@ import asyncio
 import logging
 import time
 import aiosqlite
-# Setup logging
-logging.basicConfig(level=logging.INFO, filename='bot.log', filemode='w', 
+import difflib
+import json
+import time
+
+logging.basicConfig(level=logging.INFO, filename='bot.log', filemode='w',
                     format='%(asctime)s:%(levelname)s:%(name)s: %(message)s')
 
-# List of polls
+
 polls = [
     "{}'s mum looked pretty sexy lately, what do y'all think?",
     "Have you seen {}'s mum? If 'overweight' was a sport, she’d be an Olympian, right?",
     "Is it just me or is {}'s mum just the most majestic creature you've ever laid your eyes on",
-    "Can someone confirm if {}'s mum has dropped her 'film' yet?",
+    "Can someone confirm if {}'s mum has whitened her asshole yet? That shit needs a clean since i saw it last.",
     "Would you eat {}'s mum's booty hole for -$100?",
     "How does {}'s mum manage to look that sexy? Not a question, just saying.",
     " {}'s mum. Yes for Tits, No for Ass. You Decide.",
     ]
 
-# Define your keywords and corresponding jokes
 KEYWORD_JOKES = {
     'big': [
         'You know what else is big? Your mum!',
@@ -29,9 +32,11 @@ KEYWORD_JOKES = {
     ],
     'small':[ 'That might be small, but your mum\'s appetite sure isn\'t!', ],
     'soft': ['Not as soft as your mum\'s ass!',],
+    'huge': ['Almost as huge as my undying love for your mother.','Talking of huge have you seen your mama\'s ass lately?',],
     'hairy': ['Hairy as your mum!',],
     'old': ['Couldn\'t be as old as your mum!',],
     'fat': ['Not as fat as your mum!',],
+    'sucks': ['sucks like your mum on a friday night',],
     'loose': ['yo mama pussy loose ah hell',],
     'dinner': ['Speaking of dinnner where is your mum ;)',],
     'heavy': ['Heavy? I guess you haven\'t lifted your mum lately!',],
@@ -45,25 +50,34 @@ KEYWORD_JOKES = {
     'thin': ['Thin? Couldn\'t be your mum!',],
     'deep': ['Almost as deep as I am in your mama',],
     'food': ['talking bout food, tell ur mum daddy wants his milky ;)',],
+    'help': ['if anyone needs help it\'s your mum. she needs to lose some weight;)',],
     ('would', 'you'): ['Would you get your mum for me so she can bounce on deez nuts!',],
     ('get', 'on'): ['I\'ll get on just like your mum got on this dick!',],
+    ('deez', 'nuts'): ['deez nuts in yo mama!',],
     ('hop', 'on'): ['Hop on deez nuts!','Get ur mum to hop on deez nuts!',],
-    ('this', 'sucks'): ['Yeah sucks more than your mum!',],
+    ('this', 'sucks', True): ['Yeah sucks more than your mum!',],
     ('u', 'should'): ['u should tell ur mum she lookin kinda cute today',],
     ('is', 'ass'): ['Your mum is ass.',],
     ('are', 'ass'): ['Your mums titties are ass.',],
-    ('my', 'perms'): ['Stop complaining',],
+    ('my', 'perms'): ['Stop complaining','Shut up'],
     ('should', 'i'): ['yes.','no.','maybe.','without a doubt',],
     ('loading'): ['loading up your mum with goodness',],
-    ('thanks', 'bot'): ['you\'re welcome','all good',],
+    ('thanks', 'bot'): ['you\'re welcome','all good', 'don\'nt even worry about it'],
     ('good', 'bot'): ['thank you','appreciate it',],
+    ('bad', 'bot'): ['damn','k','https://tenor.com/view/waah-waa-sad-wah-waaah-gif-25875771','https://tenor.com/view/ishizuka-akari-crying-girl-gif-27076775'],
     ('i\'m', 'getting'): ['and i\'m getting lucky with yo mama!','and i\'m getting good ass top from yo mama!',],
-    ('im', 'getting'): ['and i\'m getting lucky with yo mama!','and i\'m getting good ass top from yo mama!',],
+    ('im', 'getting', True): ['and i\'m getting lucky with yo mama!','and i\'m getting good ass top from yo mama!',],
     ('good', 'morning'): ['Good Morning yourself! Is your mum walking alright after last night?',],
     ('hate', 'you'): ['https://tenor.com/view/damn-kendrick-lamar-%EC%BC%84%EB%93%9C%EB%A6%AD-%EB%9D%BC%EB%A7%88-gif-9061375','damn.',],
 }
 
-# Define a separate list for slash command jokes
+KEYWORD_PATTERNS = {
+    keywords: re.compile(
+        r'\b' + (r'\b \b'.join(keywords[:-1]) if isinstance(keywords, tuple) and keywords[-1] is True else r'\b \b'.join(keywords) if isinstance(keywords, tuple) else keywords) + r'\b', 
+        re.IGNORECASE
+    ) for keywords in KEYWORD_JOKES.keys()
+}
+
 SLASH_COMMAND_JOKES = [
     'Yo mama is so fat that when she hauls ass, she has to make two trips.',
     'Yo mama is so poor she goes to KFC to lick other peoples fingers.',
@@ -80,14 +94,15 @@ SLASH_COMMAND_JOKES = [
     'I told yo mama to act her age and the bitch dropped dead.',
     'Yo mama so fat after I finished fucking her I rolled over three times and I was still on the bitch.',
     'Yo mama so nasty, she got fired from the sperm bank for drinking on the job',
-    'Yo mama so fat she got a $1567 debt on Afterpay from ordering McDonalds',    
+    'Yo mama so fat she got a $1567 debt on Afterpay from ordering McDonalds',
+    '{member}\'s mama smells like ham.',
 ]
-# Define the necessary intents
+
 intents = discord.Intents.default()
-intents.messages = True  # Assuming the bot needs access to message content
+intents.messages = True 
 intents.guilds = True
 intents.members = True  # Necessary for member-related features
-intents.message_content = True  # This line enables the message content intent
+intents.message_content = True 
 class MyBot(commands.Bot):
     async def close(self):
         global db_connection
@@ -96,7 +111,7 @@ class MyBot(commands.Bot):
 
         await super().close()
 
-# Initialize your bot
+
 bot = MyBot(command_prefix="/", intents=intents)
 
 db_connection = None
@@ -106,7 +121,6 @@ async def get_database_connection():
     return db_connection
 
 
-# This should be called once at the start of your application to initialize the database
 async def initialize_database():
     try:
         global db_connection
@@ -257,14 +271,13 @@ async def on_message(message):
     logging.info(f'Received message: "{message.content}" from {message.author} on server: {message.guild.id}')
 
     # Increment the message count for the guild
-    guild_id = message.guild.id
+    guild_id = str(message.guild.id)  # Convert to string for JSON key compatibility
     await save_message_count(guild_id)
 
-    # Threshold for triggering the poll
-    poll_message_threshold = 49  # Adjust this number to the desired threshold for polls
-
-    # Threshold for triggering a 'your_mum' joke
-    joke_message_threshold = 20  # Adjust this number to the desired threshold for jokes
+    # Load thresholds from JSON file
+    thresholds = guild_thresholds.get(guild_id, {'poll': 49, 'joke': 20})
+    poll_message_threshold = thresholds['poll']
+    joke_message_threshold = thresholds['joke']
 
     # Check if the message count has reached any of the thresholds
     current_count = await get_message_count(guild_id)
@@ -286,57 +299,56 @@ async def on_message(message):
         # Reply to the message that triggered the joke
         await message.reply(joke)
 
+    # Process keyword jokes
+    message_content = message.content
+    for keywords, jokes_list in KEYWORD_JOKES.items():
+        pattern = KEYWORD_PATTERNS[keywords]
+        if pattern.search(message_content):
+            joke = random.choice(jokes_list)
+            await message.reply(joke)
+            await update_stats(guild_id, '_'.join(keywords) if isinstance(keywords, tuple) else keywords)
+            break
+
     # Needed to process commands if the bot is also using command decorators
     await bot.process_commands(message)
-    
-    # The message handler will need to check for both single keywords and tuples with order.
-    message_content = message.content.lower()  # We'll keep the original message content here
-    for keywords, jokes_list in KEYWORD_JOKES.items():
-        if isinstance(keywords, tuple):  # If the key is a tuple, we'll check for the exact sequence
-            # Join the tuple into a phrase and check if it appears in the message
-            keyword_phrase = ' '.join(keywords)
-            if keyword_phrase in message_content:
-                # Select a random joke from the list of jokes for these keywords
-                joke = random.choice(jokes_list)
-                await message.reply(joke)
-                # Update keyword stats
-                await update_stats(guild_id, '_'.join(keywords))
-                break
-        else:  # If the key is a string, it's a single keyword
-            if keywords in message_content.split():  # Splitting to match whole words only
-                # Select a random joke from the list of jokes for this keyword
-                joke = random.choice(jokes_list)
-                await message.reply(joke)
-                # Update keyword stats
-                await update_stats(guild_id, keywords)
-                break
-
 
 @bot.tree.command(name='your_mum', description='Respond with a random your mum joke.')
-async def your_mum(interaction: discord.Interaction):
-    try:
-        start_time = time.time()  # Start time for execution measurement
-        logging.info(f"'your_mum' command invoked on server: {interaction.guild_id}")
+async def your_mum(interaction: discord.Interaction, member_name: str = None):
+    logging.info(f"'your_mum' command invoked on server: {interaction.guild_id}")
+    start_time = time.time()  # Start time for execution measurement
 
-        # Defer the response if the processing might take some time
+    try:
+        # Defer the response if processing might take some time
         await interaction.response.defer()
 
-        joke = random.choice(SLASH_COMMAND_JOKES)
+        guild = interaction.guild
 
-        # Followup since the response has been deferred
-        await interaction.followup.send(joke)
+        # Find a member based on the provided name or select a random member
+        member = find_closest_member(guild, member_name) if member_name else select_random_member(guild)
+
+        # Choose a random joke
+        joke = random.choice(SLASH_COMMAND_JOKES)
+        # If a member is found, format the joke with the member's mention
+        if member:
+            joke_text = joke.format(member=member.mention) if '{member}' in joke else f"{member.mention}, {joke}"
+        else:
+            # If no member is found or provided, use the joke as is
+            joke_text = joke
+
+        # Send the joke as a follow-up response
+        await interaction.followup.send(joke_text)
 
         # Update command usage statistics
-        await update_command_usage(interaction.guild.id, 'your_mum')
+        await update_command_usage(guild.id, 'your_mum')
 
-        end_time = time.time()  # End time for execution measurement
-        logging.info(f"'your_mum' command processed in {end_time - start_time} seconds")
     except Exception as e:
         logging.error(f"Error in 'your_mum' command: {e}")
-
-        # Since we've deferred, we should always use followup here
+        # Send error message as a follow-up if the initial response was deferred
         await interaction.followup.send("An error occurred while processing your request.", ephemeral=True)
-            
+
+    end_time = time.time()  # End time for execution measurement
+    logging.info(f"'your_mum' command processed in {end_time - start_time} seconds")
+    
 @bot.tree.command(name='stats', description='Display usage stats.')
 async def stats(interaction: discord.Interaction):
     try:
@@ -417,33 +429,332 @@ class PollView(discord.ui.View):
         # Return the current poll message with the vote counts
         return f'Votes: Yes - {self.yes_count} | No - {self.no_count}'
 
-# Function to create and send a new poll
 async def create_and_send_poll(channel, member):
     poll_message_text = random.choice(polls).format(member.mention)
-    view = PollView()  # No arguments 
+    view = PollView()  # Assuming PollView is defined elsewhere in your code
     await channel.send(poll_message_text, view=view)
-   
+    
 def select_random_member(guild):
     return random.choice([member for member in guild.members if not member.bot]) if guild.members else None
 
-# Create a slash command for the poll
-@bot.tree.command(name='poll', description='Create a poll about a random member.')
-async def poll(interaction: discord.Interaction):
+
+def find_closest_member(guild, member_name):
+    if not member_name:
+        return None
+
+    member_name = member_name.lower()
+    best_match = None
+    highest_similarity = 0
+
+    for member in guild.members:
+        if member.bot:
+            continue
+
+        # Consider both the member's display name and username
+        names_to_compare = [member.display_name.lower(), member.name.lower()]
+
+        for name in names_to_compare:
+            similarity = difflib.SequenceMatcher(None, member_name, name).ratio()
+            if similarity > highest_similarity:
+                best_match = member
+                highest_similarity = similarity
+
+    # Adjust the similarity threshold if needed
+    similarity_threshold = 0.2
+
+    return best_match if highest_similarity >= similarity_threshold else None
+
+@bot.tree.command(name='poll', description='Create a poll about a specific or random member.')
+async def poll(interaction: discord.Interaction, member_name: str = None):
     guild = interaction.guild
     if not guild:
         await interaction.response.send_message("This command can't be used outside of a server.", ephemeral=True)
         return
 
-    random_member = select_random_member(guild)
-    if random_member:
-        await create_and_send_poll(interaction.channel, random_member)
-        await interaction.response.send_message(f"A poll has been created for {random_member.mention}.", ephemeral=True)
-    else:
-        await interaction.response.send_message("No members found to create a poll about.", ephemeral=True)
+    selected_member = find_closest_member(guild, member_name) if member_name else select_random_member(guild)
     
-    # Update the command usage stats once, after the poll has been created or failed.
-    await update_command_usage(interaction.guild.id, 'poll')
+    if selected_member:
+        await create_and_send_poll(interaction.channel, selected_member)
+        await interaction.response.send_message(f"A poll has been created for {selected_member.mention}.", ephemeral=True)
+    else:
+        await interaction.response.send_message("No matching members found.", ephemeral=True)
 
-bot.run('INSERT APP TOKEN HERE')
+    # Update command usage stats
+    await update_command_usage(guild.id, 'poll')
+
+@bot.tree.command(name='set_thresholds', description='Set thresholds for polls and jokes in this server.')
+async def set_thresholds_command(interaction: discord.Interaction, poll_threshold: int, joke_threshold: int):
+    # Manual validation for threshold values
+    if not 10 <= poll_threshold <= 100 or not 5 <= joke_threshold <= 50:
+        await interaction.response.send_message("Poll threshold must be between 10 and 100, and joke threshold must be between 5 and 50.", ephemeral=True)
+        return
+
+    guild_id = str(interaction.guild_id)  # JSON keys must be strings
+    guild_thresholds[guild_id] = {'poll': poll_threshold, 'joke': joke_threshold}
+    save_thresholds(guild_thresholds)
+
+    confirmation_message = (
+        f"Thresholds updated for this server:\n"
+        f"- Poll Trigger Threshold: {poll_threshold} messages\n"
+        f"- Joke Trigger Threshold: {joke_threshold} messages"
+    )
+    await interaction.response.send_message(confirmation_message)
+
+def load_thresholds():
+    try:
+        with open('thresholds.json', 'r') as file:
+            # Check if the file is empty
+            content = file.read()
+            if not content:
+                return {}
+            return json.loads(content)
+    except FileNotFoundError:
+        # Create a new JSON file with an empty dictionary if it doesn't exist
+        with open('thresholds.json', 'w') as file:
+            json.dump({}, file, indent=4)
+        return {}
+    except json.JSONDecodeError:
+        # Handle any other JSON decode errors
+        logging.error("Error decoding JSON from 'thresholds.json'. Using default thresholds.")
+        return {}
+
+def save_thresholds(thresholds):
+    with open('thresholds.json', 'w') as file:
+        json.dump(thresholds, file, indent=4)
+
+guild_thresholds = load_thresholds()
+
+def load_user_data():
+    try:
+        with open('user_data.json', 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return {}
+
+def save_user_data(data):
+    with open('user_data.json', 'w') as file:
+        json.dump(data, file, indent=4)
+
+def get_user_data(user_id, user_data):
+    user_id_str = str(user_id)
+    if user_id_str not in user_data:
+        # Initialize user data if not present
+        user_data[user_id_str] = {"currency": 10000, "losses": 0, "bet_amount": 10}
+    elif "bet_amount" not in user_data[user_id_str]:
+        # Ensure 'bet_amount' field exists
+        user_data[user_id_str]["bet_amount"] = 10
+    return user_data[user_id_str]
+
+def update_user_currency(user_id, amount, user_data):
+    user_id_str = str(user_id)
+    user = get_user_data(user_id_str, user_data)
+    user["currency"] += amount
+    if amount < 0:
+        user["losses"] -= amount  # Track negative amounts as losses
+    save_user_data(user_data)
+
+def update_user_bet_amount(user_id, bet_amount, user_data):
+    user_data = get_user_data(user_id, user_data)
+    user_data["bet_amount"] = bet_amount
+    save_user_data(user_data)
+    
+def get_user_currency(user_id, user_data):
+    user = get_user_data(user_id, user_data)
+    return user["currency"]
+    
+    
+def get_user_currency(user_id, user_data):
+    user = get_user_data(user_id, user_data)
+    return user["currency"]
+
+async def spin_slots(ctx_or_interaction, bet_amount, user_id, user_data, message=None):
+    user_id_str = str(user_id)
+    user = get_user_data(user_id_str, user_data)
+
+    if user["currency"] < bet_amount:
+        response_message = "You don't have enough currency to play!"
+        embed = discord.Embed(description=response_message, color=0xff0000)
+        if isinstance(ctx_or_interaction, discord.Interaction):
+            await ctx_or_interaction.response.send_message(response_message, ephemeral=True)
+        else:
+            await ctx_or_interaction.send(embed=embed)
+        return
+
+    # Deduct the bet amount and update winnings
+    update_user_currency(user_id_str, -bet_amount, user_data)
+
+    # Slot machine logic with adjusted RTP
+    result_str, winnings = calculate_slot_results(user["bet_amount"])  # Use the user's current bet amount
+    embed = prepare_slot_embed(result_str, winnings, user["bet_amount"])  # Pass the bet_amount here
+
+    # Reload user data for updated balance
+    user_data = load_user_data()
+    new_balance = user_data[user_id_str]["currency"]
+    embed.add_field(name="New Balance", value=f"${new_balance}", inline=False)
+
+    # Create view for the slot machine
+    view = SlotMachineView(user_id_str, user_data[user_id_str]["bet_amount"])
+
+    # Handle message sending or editing
+    await handle_message_sending(ctx_or_interaction, message, embed, view)
+
+def calculate_slot_results(bet_amount):
+    symbols = ["🍒", "🍇", "🍋", "💎", "🍀", "🍑"]  # Include peach emoji as a rare symbol
+    # Adjust weights to make the peach symbol rare
+    symbol_weights = [0.24, 0.20, 0.15, 0.10, 0.03, 0.008]
+
+    result = random.choices(symbols, weights=symbol_weights, k=3)
+    result_str = " | ".join(result)
+
+    winnings = 0
+    unique_symbols = len(set(result))
+
+    # Check for jackpot (all peaches)
+    if result == ["🍑", "🍑", "🍑"]:
+        # Large jackpot payout
+        winnings = bet_amount * 69  # Adjust the multiplier as desired for the jackpot
+    elif unique_symbols == 1:  # All symbols match, but not the jackpot
+        symbol_index = symbols.index(result[0])
+        # Standard payouts
+        payouts = [bet_amount * 0.75, bet_amount * 2, bet_amount * 3, bet_amount * 6, bet_amount * 12, 0]
+        winnings = payouts[symbol_index]
+    elif unique_symbols == 2:  # Near-miss
+        winnings = bet_amount * 0.1
+
+    # RTP adjustment
+    rtp_adjustment = random.uniform(0.85, 0.95)
+    winnings *= rtp_adjustment
+
+    return result_str, int(winnings)
+
+def prepare_slot_embed(result_str, winnings, bet_amount):
+    color_win = 0x00ff00  # Green for win
+    color_lose = 0xff0000  # Red for loss
+    embed_color = color_win if winnings > 0 else color_lose
+
+    embed = discord.Embed(title="🎰 Slot Machine 🎰", color=embed_color)
+    embed.description = f"**Spin Results:**\n{result_str}\n**Bet Amount:** ${bet_amount}"
+
+    if winnings > 0:
+        result_text = f"🎉 **Jackpot!** You win ${winnings} 🎉"
+    else:
+        loss_amount = bet_amount - winnings
+        result_text = f"😔 You lost ${loss_amount}. Better luck next time! 🍀"
+
+    embed.add_field(name="💰 Result", value=result_text, inline=False)
+    embed.set_footer(text="Spin again for a chance to win more!", icon_url="https://i.ibb.co/kXJBHKg/SLOT-Machine-handle.png")
+    embed.set_thumbnail(url="https://i.ibb.co/XJQNsd4/FY3q1-Wt-UUAIf-Vs-G.jpg")
+
+    return embed
+
+async def handle_message_sending(ctx_or_interaction, message, embed, view):
+    if message:
+        await message.edit(embed=embed, view=view)
+    else:
+        if isinstance(ctx_or_interaction, discord.Interaction):
+            if ctx_or_interaction.response.is_done():
+                # Retrieve the message_id from the interaction's message
+                message_id = ctx_or_interaction.message.id
+                await ctx_or_interaction.followup.edit_message(message_id, embed=embed, view=view)
+            else:
+                # Send a new response
+                message = await ctx_or_interaction.response.send_message(embed=embed, view=view)
+                view.message = message  # Set the message in the view
+
+
+@bot.tree.command(name='slots', description='Play slots with real casino odds!')
+async def slots(interaction: discord.Interaction):
+    user_id = str(interaction.user.id)
+    user_data = load_user_data()
+
+    user = get_user_data(user_id, user_data)
+    if user["currency"] < user["bet_amount"]:
+        await interaction.response.send_message("You don't have enough cash to play!", ephemeral=True)
+        return
+
+    await spin_slots(interaction, user["bet_amount"], user_id, user_data)
+
+@bot.tree.command(name='leaderboard', description='Display slots leaderboards.')
+async def leaderboard(interaction: discord.Interaction):
+    user_data = load_user_data()
+    
+    # Sort users by currency in descending order
+    sorted_users = sorted(user_data.items(), key=lambda x: x[1]['currency'], reverse=True)
+
+    # Creating an embed for the leaderboard
+    embed = discord.Embed(title="🏆 Global Leaderboard", description="Top balances and losses:", color=0x00ff00)
+    
+    # Add fields for top users
+    for user_id, data in sorted_users[:10]:  # Adjust the number as needed
+        user = await bot.fetch_user(int(user_id))
+        embed.add_field(
+            name=f"{user.name}", 
+            value=f"💰 Cash: {data['currency']} | 📉 Losses: {data['losses']}", 
+            inline=False
+        )
+
+    await interaction.response.send_message(embed=embed)
+
+
+class SlotMachineView(discord.ui.View):
+    def __init__(self, user_id, bet_amount):
+        super().__init__()
+        self.user_id = user_id
+        self.bet_amount = bet_amount
+        self.message = None  # Initialize the message attribute
+
+    async def update_bet_amount(self, interaction, amount_change):
+        user_data = load_user_data()
+
+        # Get the user's current data using self.user_id
+        user = get_user_data(self.user_id, user_data)
+
+        # Calculate the new bet amount, ensuring it's at least 10
+        new_bet_amount = max(10, user["bet_amount"] + amount_change)
+
+        # Update the bet amount in the user data
+        user["bet_amount"] = new_bet_amount
+        save_user_data(user_data)
+
+        # Acknowledge the interaction
+        await interaction.response.defer()
+
+        # Update the bet amount in the view
+        self.bet_amount = new_bet_amount
+
+        # Edit the original message to show the updated bet amount
+        await interaction.followup.send(f"New bet amount: ${new_bet_amount}", ephemeral=True)
+
+    # ... other button handlers ...
+
+    @discord.ui.button(label="Spin Again", style=discord.ButtonStyle.green)
+    async def spin_again(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if str(interaction.user.id) != self.user_id:
+            await interaction.response.send_message("This is not your machine!", ephemeral=True)
+            return
+
+        user_data = load_user_data()
+        user = get_user_data(self.user_id, user_data)
+
+        # Check if the user has enough currency to spin again
+        if user["currency"] < user["bet_amount"]:
+            await interaction.followup.send("You don't have enough currency to spin again!", ephemeral=True)
+            return
+
+        # Acknowledge the interaction before proceeding
+        await interaction.response.defer()
+
+        # Spin again with the updated bet amount
+        await spin_slots(interaction, user["bet_amount"], self.user_id, user_data, self.message)
+        
+    @discord.ui.button(label="Increase Bet", style=discord.ButtonStyle.blurple)
+    async def increase_bet(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.update_bet_amount(interaction, 10)  # Increase bet by 10, adjust as needed
+
+    @discord.ui.button(label="Decrease Bet", style=discord.ButtonStyle.red)
+    async def decrease_bet(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.update_bet_amount(interaction, -10)  # Decrease bet by 10, adjust as needed
+
+bot.run('MTE3MDE0NTg4MTgyNDE3MDExNQ.GemLxU.Sot50ZTOni_oX6fZ7qX_65Bb1kdmgpI28QVKZY')
 
 

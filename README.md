@@ -12,11 +12,11 @@
 - Logging: It logs message data for analysis and debugging.
 - Stats Update: It maintains and updates server usage statistics for commands and jokes.
 - Dynamic Responses: It replies to messages dynamically, and can reference the message it's responding to
+- Slots minigame
 
 ## Dependencies
 
-- Python 3.9
-- SQLite
+- Python 3.8+
 - Aiosqlite
 - Discord.py
 
