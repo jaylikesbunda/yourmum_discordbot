@@ -12,12 +12,14 @@
 - Logging: It logs message data for analysis and debugging.
 - Stats Update: It maintains and updates server usage statistics for commands and jokes.
 - Dynamic Responses: It replies to messages dynamically, and can reference the message it's responding to
-- Slots minigame
+- Slots: Play slots with casino odds!
+- Youtube Music Playback: use /play to search or paste a url for the bot to play.
 
 ## Dependencies
 
-- Python 3.8+
+- Python 3.10+
 - Aiosqlite
 - Discord.py
-
+- ffmpeg
+- yt-dlp
 created by Jay Candel

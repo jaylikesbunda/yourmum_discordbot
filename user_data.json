@@ -1,7 +1,27 @@
 {
     "420155234833268737": {
-        "currency": 997470,
-        "losses": 3030,
+        "currency": 19012,
+        "losses": 24658,
         "bet_amount": 50
+    },
+    "699603840072286291": {
+        "currency": 10993,
+        "losses": 86,
+        "bet_amount": 20
+    },
+    "683223142541426710": {
+        "currency": 4300,
+        "losses": 1608,
+        "bet_amount": 150
+    },
+    "463228407606673408": {
+        "currency": 10975,
+        "losses": 200,
+        "bet_amount": 100
+    },
+    "763585647197028374": {
+        "currency": 11069,
+        "losses": 10,
+        "bet_amount": 10
     }
 }
