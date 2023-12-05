@@ -1,41 +1,12 @@
-2023-11-29 09:33:33,488:INFO:discord.client: logging in using static token
-2023-11-29 09:33:35,402:INFO:discord.gateway: Shard ID None has connected to Gateway (Session ID: 23e55fb25358d638f33ffb99ae1995fc).
-2023-11-29 09:33:37,702:INFO:root: Your Mum has connected to Discord!
-2023-11-29 09:33:57,154:INFO:root: Received message: "big" from fuckyoudeki on server: 1146320975047180388
-2023-11-29 09:33:57,361:INFO:root: Received message: "" from Pokétwo#8236 on server: 1146320975047180388
-2023-11-29 09:33:58,175:INFO:root: update_stats called for server: 1146320975047180388, keyword: big
-2023-11-29 09:34:04,917:INFO:root: Received message: "big" from fuckyoudeki on server: 1146320975047180388
-2023-11-29 09:34:05,396:INFO:root: update_stats called for server: 1146320975047180388, keyword: big
-2023-11-29 09:34:44,349:INFO:root: Received message: "i think i fixed the bot it's such a good bot" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 09:34:45,446:INFO:root: update_stats called for server: 1088737716667162667, keyword: good_bot
-2023-11-29 09:35:12,436:INFO:root: Received message: "good bot" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 09:35:12,879:INFO:root: update_stats called for server: 1088737716667162667, keyword: good_bot
-2023-11-29 09:37:30,035:INFO:root: Received message: "should i have have sex with <@463228407606673408>s mother" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 09:37:30,633:INFO:root: update_stats called for server: 1088737716667162667, keyword: should_i
-2023-11-29 09:39:46,075:INFO:root: Received message: "._." from ull on server: 1088737716667162667
-2023-11-29 09:39:55,583:INFO:root: Received message: "the bot is so cute awww" from gwenhugsrats on server: 1088737716667162667
-2023-11-29 09:39:55,822:INFO:root: Received message: "" from Pokétwo#8236 on server: 1088737716667162667
-2023-11-29 09:39:56,575:INFO:root: update_stats called for server: 1088737716667162667, keyword: cute
-2023-11-29 09:40:12,346:INFO:root: Received message: "oh" from ull on server: 1088737716667162667
-2023-11-29 09:40:56,734:INFO:root: Received message: "i don't make the rules" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 09:41:08,649:INFO:root: Received message: "" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 09:42:08,447:INFO:root: Received message: "\U0001f642" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 09:42:32,917:INFO:root: Received message: "by the way the /play takes a minute because it downloads the file to my computer to play it lmaO" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:02:49,978:INFO:root: Received message: "<@463228407606673408> is lethal company good" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:02:57,874:INFO:root: Received message: "Yes" from .dexdela on server: 1088737716667162667
-2023-11-29 10:02:59,992:INFO:root: Received message: "It’s very fun" from .dexdela on server: 1088737716667162667
-2023-11-29 10:03:09,307:INFO:root: Received message: "i got it for me and kingmatt" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:03:15,485:INFO:root: Received message: "Niceeeee" from .dexdela on server: 1088737716667162667
-2023-11-29 10:03:23,689:INFO:root: Received message: "yes but im scared" from ull on server: 1088737716667162667
-2023-11-29 10:03:26,687:INFO:root: Received message: "I want it but I’m too broke for a 15 dollar game \U0001f622" from .dexdela on server: 1088737716667162667
-2023-11-29 10:03:32,488:INFO:root: Received message: "bruh" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:03:41,105:INFO:root: Received message: "jus dont buy robux" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:03:49,005:INFO:root: Received message: "I don’t have a job" from .dexdela on server: 1088737716667162667
-2023-11-29 10:03:55,487:INFO:root: Received message: "oh" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:03:56,678:INFO:root: Received message: "I’m moving in with Gwen before I get one" from .dexdela on server: 1088737716667162667
-2023-11-29 10:03:56,966:INFO:root: Received message: "so true" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:04:01,433:INFO:root: Received message: "damn" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:04:17,468:INFO:root: Received message: "then u can buy all the $15 games you want" from fuckyoudeki on server: 1088737716667162667
-2023-11-29 10:04:23,893:INFO:root: Received message: "Yup" from .dexdela on server: 1088737716667162667
-2023-11-29 10:04:24,146:INFO:root: Received message: "there it is" from ull on server: 1088737716667162667
-2023-11-29 10:04:26,654:INFO:root: Received message: "Hopefully" from .dexdela on server: 1088737716667162667
+2023-12-05 08:43:07,056:INFO:discord.client: logging in using static token
+2023-12-05 08:43:09,320:INFO:discord.gateway: Shard ID None has connected to Gateway (Session ID: 856a7cebbff8abd70e8db9d9dfd7090c).
+2023-12-05 08:43:11,353:INFO:root: Your Mum has connected to Discord!
+2023-12-05 08:43:24,122:INFO:root: Handling purchase or loan for user 420155234833268737 with item loan
+2023-12-05 08:43:24,122:INFO:root: Processing a loan request
+2023-12-05 08:43:24,128:INFO:root: Loan processed successfully for user 420155234833268737
+2023-12-05 08:46:13,940:ERROR:asyncio: Task exception was never retrieved
+future: <Task finished name='discord-ui-view-timeout-e28d667c743cbd70fa073dd8ea3b13ea' coro=<PaginationView.on_timeout() done, defined at C:\Users\Flavo\Downloads\yourmumbot\fishing.py:52> exception=AttributeError("'PaginationView' object has no attribute 'message'")>
+Traceback (most recent call last):
+  File "C:\Users\Flavo\Downloads\yourmumbot\fishing.py", line 56, in on_timeout
+    await self.message.edit(view=self)  # Update the message to reflect the disabled state
+AttributeError: 'PaginationView' object has no attribute 'message'

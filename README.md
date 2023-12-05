@@ -13,7 +13,8 @@
 - Stats Update: It maintains and updates server usage statistics for commands and jokes.
 - Dynamic Responses: It replies to messages dynamically, and can reference the message it's responding to
 - Slots: Play slots with casino odds!
-- Youtube Music Playback: use /play to search or paste a url for the bot to play.
+- Music Playback: use /play to search or paste a url for the bot to play.
+- Store, loans and Items
 
 ## Dependencies
 
@@ -22,6 +23,9 @@
 - Discord.py
 - ffmpeg
 - yt-dlp
+- difflib
+- aiohttp 
+- asyncio
 
-
-## created by Jay Candel
+ 
+created by Jay Candel
