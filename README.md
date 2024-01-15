@@ -42,7 +42,7 @@ Dependencies
 
 Getting Started
 
-To get started with YourMum Discord Bot, clone the repository and install the necessary dependencies. Follow the setup instructions in the documentation to configure the bot for your server.
+To get started with YourMum Discord Bot, clone the repository and install the necessary dependencies. replace your discord bot key with the placeholder at the bottom of the main script.
 Contributions
 
 YourMum is an open-source project, and contributions are welcome. If you'd like to contribute, please contact me at creepersbeast@gmail.com
