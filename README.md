@@ -1,6 +1,7 @@
 YourMum Discord Bot
 
 Features
+
 Entertainment
 
     Joke Responses: Automatically sends a 'your mum' joke after a certain number of messages are sent in the server.
