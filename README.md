@@ -1,52 +1,30 @@
-YourMum Discord Bot
+Introduction
 
-Features
+YourMum Discord Bot is a versatile and entertaining addition to any Discord server, offering a range of features from jokes to music playback. Designed for engagement and fun, it enhances server interactivity and provides useful utilities.
 
-Entertainment
+Features:
 
-    Joke Responses: Automatically sends a 'your mum' joke after a certain number of messages are sent in the server.
-    Keyword Triggered Jokes: Responds with jokes upon detecting specific keywords or phrases in messages.
-    Slash Commands: Offers slash commands like /your_mum for users to manually trigger actions, such as requesting a random joke.
+Joke Responses: Sends 'your mum' jokes after a preset number of messages.
+Keyword Jokes: Triggers jokes on specific keywords or phrases.
+Global Slash Commands: Use commands like /help for a list of all commands and their usage.
+Message Tracking: Counts messages in the server.
+Polls: Creates polls randomly after a certain number of messages.
+Dynamic Replies: Contextual responses to user messages.
+Slots & Roulette: /Slots and /Roulette with casino odds for users.
+Music Streaming: Stream music by searching or pasting a spotify link with /play command.
+Store & Loans: In-bot store, loan system, and items.
+Logging: Keeps logs for analysis.
+Stats: Updates on bot usage and activities.
+Leaderboard: Leaderboard to keep track of slot winnings and losses globally.
+Custom Polls: Send custom polls and answers in chat with /poll.
 
-Interactivity
+Dependencies:
 
-    Message Counting: Tracks the total number of messages sent in a server.
-    Poll Creation: Automatically creates a poll by selecting a random member after reaching a set message threshold.
-    Dynamic Responses: Replies to messages contextually, engaging directly with users' messages.
+    Python 3.10+
+    Aiosqlite, Discord.py, FFmpeg, yt-dlp, Difflib, Aiohttp, Asyncio
 
-Gaming and Music
 
-    Slots: Offers a slot machine game with casino-like odds for users to play.
-    Music Playback: Users can use /play to search for music or paste URLs for the bot to stream.
-
-Utilities
-
-    Store, Loans, and Items: Features an in-bot store and loan system along with various items for users to interact with.
-    Logging: Maintains logs of message data for analysis and debugging.
-    Stats Update: Regularly updates server usage statistics for commands and jokes, providing insights into bot activity.
-
-Quality of Life
-
-    Polls & Custom Keywords: Includes a feature to create custom polls and set specific keywords for jokes.
-
-Dependencies
-
-    Python 3.10 or higher
-    Aiosqlite
-    Discord.py
-    FFmpeg
-    yt-dlp
-    Difflib
-    Aiohttp
-    Asyncio
-
-Getting Started
-
-To get started with YourMum Discord Bot, clone the repository and install the necessary dependencies. replace your discord bot key with the placeholder at the bottom of the main script.
-Contributions
-
-YourMum is an open-source project, and contributions are welcome. If you'd like to contribute, please contact me at creepersbeast@gmail.com
-
+YourMum is open-source and welcomes contributions. Contact: creepersbeast@gmail.com
 Author
 
-Created by Jay Candel
+Jay Candel
