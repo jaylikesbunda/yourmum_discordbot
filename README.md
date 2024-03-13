@@ -1,6 +1,6 @@
 ## Introduction
 
-YourMum Discord Bot is a versatile and entertaining addition to any Discord server, offering a range of features from jokes to music playback. Designed for engagement and fun, it enhances server interactivity and provides useful utilities.
+Your Mum Discord Bot is a versatile and entertaining addition to any Discord server, offering a range of features from jokes to music playback. Designed for engagement and fun, it enhances server interactivity and provides useful utilities.
 
 ## Features
 
